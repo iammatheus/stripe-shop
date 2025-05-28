@@ -2,7 +2,7 @@ import { styled } from "..";
 
 export const CartContainer = styled("form", {
   zIndex: 1,
-  maxWidth: "auto",
+  width: "480px",
   height: "100vh",
   padding: "3rem",
 
@@ -22,11 +22,12 @@ export const CartContainer = styled("form", {
   variants: {
     open: {
       true: {
+        transition: "all .3s",
         transform: "translateX(0px)",
       },
       false: {
         transition: "all .3s",
-        transform: "translateX(415px)",
+        transform: "translateX(480px)",
       },
     },
   },
