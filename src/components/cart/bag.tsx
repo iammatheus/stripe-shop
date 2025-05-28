@@ -13,19 +13,20 @@ import {
 import camiseta1 from "../../assets/camisetas/1.png";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useContext } from "react";
+import { BagContext } from "@/context/BagContext";
 
 export default function Bag() {
-  const [isOpenBag, setCloseBag] = useState(false);
+  const { closeBag, isOpenBag } = useContext(BagContext);
 
-  function closeBag() {
-    setCloseBag(!isOpenBag);
+  function handleCloseBag() {
+    closeBag();
   }
 
   return (
     <>
       <CartContainer open={isOpenBag}>
-        <CloseCartButton type="button" onClick={closeBag}>
+        <CloseCartButton type="button" onClick={handleCloseBag}>
           <X />
         </CloseCartButton>
 
