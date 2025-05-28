@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { BagContext } from "@/context/BagContext";
 
 export default function BagOpenButton() {
-  const { quantity, openBag } = useContext(BagContext);
+  const { productsInBag, openBag } = useContext(BagContext);
 
   function handleOpenBag() {
     openBag();
@@ -17,9 +17,11 @@ export default function BagOpenButton() {
     <BagOpenButtonContainer
       type="button"
       onClick={handleOpenBag}
-      isItemsInBag={!!quantity}
+      isItemsInBag={!!productsInBag.length}
     >
-      {quantity > 0 && <ItemsQuantity>{quantity}</ItemsQuantity>}
+      {productsInBag.length > 0 && (
+        <ItemsQuantity>{productsInBag.length}</ItemsQuantity>
+      )}
       <ShoppingBag />
     </BagOpenButtonContainer>
   );

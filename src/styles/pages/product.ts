@@ -31,6 +31,27 @@ export const ProductDetails = styled("div", {
   display: "flex",
   flexDirection: "column",
 
+  a: {
+    textDecoration: "none",
+    color: "$green500",
+    cursor: "pointer",
+
+    display: "flex",
+    gap: ".5rem",
+    alignItems: "center",
+
+    width: "5rem",
+    marginBottom: ".5rem",
+
+    borderBottom: "2px solid $gray900",
+
+    "&:hover": {
+      transition: "all .2s",
+      borderBottom: "2px solid $green300",
+      color: "$green300",
+    },
+  },
+
   h1: {
     fontSize: "$2xl",
     color: "$gray300",
