@@ -1,14 +1,16 @@
+import { BagContext, ProductItemBag } from "@/context/BagContext";
 import { stripe } from "@/lib/stripe";
 import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
 } from "@/styles/pages/product";
-import axios from "axios";
+import { ArrowLeft } from "lucide-react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
+import { useContext } from "react";
 import Stripe from "stripe";
 
 interface Props {
@@ -16,6 +18,7 @@ interface Props {
   name: string;
   imageUrl: string;
   price: string;
+  priceInCents: number;
   description: string | null;
   defaultPriceId: string;
 }
@@ -25,28 +28,37 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false);
+  // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+  //   useState(false);
+
+  const { addProductBag } = useContext(BagContext);
+
+  function handleAddProductBag(
+    { id, name, imageUrl, price, priceInCents }: ProductItemBag,
+    e: React.MouseEvent
+  ) {
+    addProductBag({ id, name, imageUrl, price, priceInCents }, e);
+  }
 
   if (!product) {
     return <p>Produto não encontrado!</p>;
   }
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
+  // async function handleBuyProduct() {
+  //   try {
+  //     setIsCreatingCheckoutSession(true);
 
-      const response = await axios.post("/api/checkout", {
-        priceId: product.defaultPriceId,
-      });
+  //     const response = await axios.post("/api/checkout", {
+  //       priceId: product.defaultPriceId,
+  //     });
 
-      const { checkoutUrl } = response.data;
-      window.location.href = checkoutUrl;
-    } catch {
-      setIsCreatingCheckoutSession(false);
-      alert("Falha ao redirecionar ao checkout!");
-    }
-  }
+  //     const { checkoutUrl } = response.data;
+  //     window.location.href = checkoutUrl;
+  //   } catch {
+  //     setIsCreatingCheckoutSession(false);
+  //     alert("Falha ao redirecionar ao checkout!");
+  //   }
+  // }
 
   return (
     <>
@@ -59,14 +71,30 @@ export default function Product({ product }: ProductProps) {
         </ImageContainer>
 
         <ProductDetails>
+          <Link href={"/"}>
+            <ArrowLeft />
+            Voltar
+          </Link>
           <h1>{product.name}</h1>
+
           <span>{product.price}</span>
           <p>{product.description}</p>
           <button
-            disabled={isCreatingCheckoutSession}
-            onClick={handleBuyProduct}
+            // disabled={isCreatingCheckoutSession}
+            onClick={(e) =>
+              handleAddProductBag(
+                {
+                  id: product.id,
+                  name: product.name,
+                  imageUrl: product.imageUrl,
+                  price: product.price,
+                  priceInCents: product.priceInCents,
+                },
+                e
+              )
+            }
           >
-            Comprar agora
+            Colocar na sacola
           </button>
         </ProductDetails>
       </ProductContainer>
@@ -113,6 +141,7 @@ export const getStaticProps: GetStaticProps<
           style: "currency",
           currency: "BRL",
         }).format(price.unit_amount ? price.unit_amount / 100 : 0),
+        priceInCents: price.unit_amount ? price.unit_amount : 0,
         description: product.description,
         defaultPriceId: price.id,
       },
