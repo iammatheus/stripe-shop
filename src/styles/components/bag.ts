@@ -1,6 +1,6 @@
 import { styled } from "..";
 
-export const CartContainer = styled("form", {
+export const CartContainer = styled("section", {
   zIndex: 1,
   width: "480px",
   height: "100vh",

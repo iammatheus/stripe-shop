@@ -12,10 +12,14 @@ import {
 
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { BagContext } from "@/context/BagContext";
+import axios from "axios";
 
 export default function Bag() {
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false);
+
   const { closeBag, isOpenBag, productsInBag, totalPrice, removeProductBag } =
     useContext(BagContext);
 
@@ -23,8 +27,26 @@ export default function Bag() {
     closeBag();
   }
 
-  function handleRemoveProductBag(id: string) {
+  async function handleRemoveProductBag(id: string) {
     removeProductBag(id);
+  }
+
+  async function handleBuyProduct() {
+    const priceIdList = productsInBag.map((product) => product.defaultPriceId);
+
+    try {
+      setIsCreatingCheckoutSession(true);
+
+      const response = await axios.post("/api/checkout", {
+        priceId: priceIdList,
+      });
+
+      const { checkoutUrl } = response.data;
+      window.location.href = checkoutUrl;
+    } catch {
+      setIsCreatingCheckoutSession(false);
+      alert("Falha ao redirecionar ao checkout!");
+    }
   }
 
   return (
@@ -82,7 +104,13 @@ export default function Bag() {
               <span>Valor total</span>
               <strong>{totalPrice}</strong>
             </div>
-            <SubmitButton type="submit">Finalizar compra</SubmitButton>
+            <SubmitButton
+              type="submit"
+              onClick={handleBuyProduct}
+              disabled={isCreatingCheckoutSession}
+            >
+              Finalizar compra
+            </SubmitButton>
           </OrderTotal>
         )}
       </CartContainer>
