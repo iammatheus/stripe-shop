@@ -28,37 +28,22 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-  //   useState(false);
-
   const { addProductBag } = useContext(BagContext);
 
   function handleAddProductBag(
-    { id, name, imageUrl, price, priceInCents }: ProductItemBag,
+    { id, name, imageUrl, price, priceInCents, defaultPriceId }: ProductItemBag,
     e: React.MouseEvent
   ) {
-    addProductBag({ id, name, imageUrl, price, priceInCents }, e);
+    addProductBag(
+      { id, name, imageUrl, price, priceInCents, defaultPriceId },
+      e
+    );
+    console.log("product", product.defaultPriceId);
   }
 
   if (!product) {
     return <p>Produto não encontrado!</p>;
   }
-
-  // async function handleBuyProduct() {
-  //   try {
-  //     setIsCreatingCheckoutSession(true);
-
-  //     const response = await axios.post("/api/checkout", {
-  //       priceId: product.defaultPriceId,
-  //     });
-
-  //     const { checkoutUrl } = response.data;
-  //     window.location.href = checkoutUrl;
-  //   } catch {
-  //     setIsCreatingCheckoutSession(false);
-  //     alert("Falha ao redirecionar ao checkout!");
-  //   }
-  // }
 
   return (
     <>
@@ -80,7 +65,6 @@ export default function Product({ product }: ProductProps) {
           <span>{product.price}</span>
           <p>{product.description}</p>
           <button
-            // disabled={isCreatingCheckoutSession}
             onClick={(e) =>
               handleAddProductBag(
                 {
@@ -89,6 +73,7 @@ export default function Product({ product }: ProductProps) {
                   imageUrl: product.imageUrl,
                   price: product.price,
                   priceInCents: product.priceInCents,
+                  defaultPriceId: product.defaultPriceId,
                 },
                 e
               )

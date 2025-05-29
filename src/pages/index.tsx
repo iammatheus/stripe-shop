@@ -19,6 +19,7 @@ interface HomeProps {
     imageUrl: string;
     price: string;
     priceInCents: number;
+    defaultPriceId: string;
   }[];
 }
 
@@ -33,10 +34,13 @@ export default function Home({ products }: HomeProps) {
   const { addProductBag } = useContext(BagContext);
 
   function handleAddProductBag(
-    { id, name, imageUrl, price, priceInCents }: ProductItemBag,
+    { id, name, imageUrl, price, priceInCents, defaultPriceId }: ProductItemBag,
     e: React.MouseEvent
   ) {
-    addProductBag({ id, name, imageUrl, price, priceInCents }, e);
+    addProductBag(
+      { id, name, imageUrl, price, priceInCents, defaultPriceId },
+      e
+    );
   }
 
   return (
@@ -71,6 +75,7 @@ export default function Home({ products }: HomeProps) {
                           imageUrl: product.imageUrl,
                           price: product.price,
                           priceInCents: product.priceInCents,
+                          defaultPriceId: product.defaultPriceId,
                         },
                         e
                       )
@@ -105,6 +110,7 @@ export const getStaticProps: GetStaticProps = async () => {
         currency: "BRL",
       }).format(price.unit_amount ? price.unit_amount / 100 : 0),
       priceInCents: price.unit_amount,
+      defaultPriceId: price.id,
     };
   });
 

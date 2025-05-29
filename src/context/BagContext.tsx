@@ -6,6 +6,7 @@ export interface ProductItemBag {
   imageUrl: string;
   price: string;
   priceInCents: number;
+  defaultPriceId: string;
 }
 
 interface BagContextType {
@@ -15,7 +16,7 @@ interface BagContextType {
   openBag: () => void;
   closeBag: () => void;
   addProductBag: (
-    { id, name, imageUrl, price }: ProductItemBag,
+    { id, name, imageUrl, price, priceInCents }: ProductItemBag,
     e: React.MouseEvent
   ) => void;
   removeProductBag: (id: string) => void;
@@ -41,7 +42,7 @@ export default function BagProvider({ children }: BagProviderProps) {
   }
 
   function addProductBag(
-    { id, name, imageUrl, price, priceInCents }: ProductItemBag,
+    { id, name, imageUrl, price, priceInCents, defaultPriceId }: ProductItemBag,
     e: React.MouseEvent
   ) {
     e.preventDefault();
@@ -52,7 +53,10 @@ export default function BagProvider({ children }: BagProviderProps) {
       if (exists) {
         return state;
       }
-      return [...state, { id, name, imageUrl, price, priceInCents }];
+      return [
+        ...state,
+        { id, name, imageUrl, price, priceInCents, defaultPriceId },
+      ];
     });
   }
 
