@@ -24,12 +24,20 @@ export const Product = styled("div", {
     objectFit: "cover",
   },
 
+  "&:hover": {
+    footer: {
+      transform: "translateY(0%)",
+      opacity: 1,
+    },
+  },
+
   footer: {
     position: "absolute",
     bottom: "0.25rem",
     left: "0.25rem",
     right: "0.25rem",
     padding: "1.25rem",
+    gap: "1rem",
 
     borderRadius: 6,
 
@@ -58,10 +66,16 @@ export const Product = styled("div", {
       fontWeight: "bold",
       color: "$green300",
     },
-  },
 
-  "&:hover": {
-    footer: {
+    "@max680": {
+      flexDirection: "column-reverse",
+      alignItems: "flex-start",
+      div: {
+        flexDirection: "column-reverse",
+      },
+    },
+
+    "@max768": {
       transform: "translateY(0%)",
       opacity: 1,
     },
@@ -73,7 +87,8 @@ export const AddProductBag = styled("button", {
   border: 0,
   color: "$white",
   borderRadius: 8,
-  padding: ".75rem",
+  width: "3rem",
+  height: "3rem",
   cursor: "pointer",
   fontWeight: "bold",
   fontSize: "$md",

@@ -30,4 +30,12 @@ export const {
       "2xl": "2rem",
     },
   },
+
+  media: {
+    max1200: "(max-width: 1200px)",
+    max960: "(max-width: 960px)",
+    max768: "(max-width: 768px)",
+    max680: "(max-width: 680px)",
+    max480: "(max-width: 480px)",
+  },
 });
