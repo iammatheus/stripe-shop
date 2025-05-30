@@ -1,4 +1,6 @@
+import { Bell } from "lucide-react";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export interface ProductItemBag {
   id: string;
@@ -48,11 +50,21 @@ export default function BagProvider({ children }: BagProviderProps) {
     e.preventDefault();
     e.stopPropagation();
 
+    const exists = productsInBag.some((product) => product.id === id);
+
+    if (exists) {
+      toast(`${name} já está na sacola.`, {
+        action: {
+          label: "OK",
+          onClick: () => {},
+        },
+        icon: <Bell />,
+        duration: 3000,
+      });
+      return;
+    }
+
     setProductsInBag((state) => {
-      const exists = state.some((product) => product.id === id);
-      if (exists) {
-        return state;
-      }
       return [
         ...state,
         { id, name, imageUrl, price, priceInCents, defaultPriceId },
