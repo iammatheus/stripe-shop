@@ -84,22 +84,21 @@ export const Product = styled("div", {
 
 export const AddProductBag = styled("button", {
   backgroundColor: "$green500",
-  border: 0,
   color: "$white",
-  borderRadius: 8,
+
+  cursor: "pointer",
   width: "3rem",
   height: "3rem",
-  cursor: "pointer",
-  fontWeight: "bold",
-  fontSize: "$md",
+
+  border: 0,
+  borderRadius: 8,
   lineHeight: 0,
 
-  "&:disabled": {
-    opacity: 0.6,
-    cursor: "not-allowed",
-  },
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 
-  "&:not(:disabled):hover": {
+  "&:hover": {
     transition: "background-color .2s",
     backgroundColor: "$green300",
   },

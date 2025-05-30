@@ -7,6 +7,9 @@ import { Container, Header } from "@/styles/pages/app";
 import Bag from "@/components/cart/bag";
 import BagOpenButton from "@/components/cart/bag-open-button";
 import BagProvider from "@/context/BagContext";
+import { Toaster } from "sonner";
+
+import "@/styles/globals.css";
 
 globalStyles();
 export default function App({ Component, pageProps }: AppProps) {
@@ -20,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
         <Bag />
       </BagProvider>
+      <Toaster />
     </Container>
   );
 }

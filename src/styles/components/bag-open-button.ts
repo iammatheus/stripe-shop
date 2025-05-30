@@ -8,11 +8,15 @@ export const BagOpenButtonContainer = styled("button", {
   color: "$gray500",
 
   border: 0,
-  borderRadius: "8px",
+  borderRadius: 8,
   lineHeight: 0,
 
-  width: 48,
-  height: 48,
+  width: "3rem",
+  height: "3rem",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 
   "&:hover": {
     transition: "color .2s",
