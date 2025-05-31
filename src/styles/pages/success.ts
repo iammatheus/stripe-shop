@@ -38,6 +38,10 @@ export const SuccessContainer = styled("main", {
   "> div": {
     display: "flex",
     justifyContent: "space-between",
+
+    "div:first-child ": {
+      marginLeft: 0,
+    },
   },
 });
 
@@ -49,7 +53,7 @@ export const ImageContainer = styled("div", {
 
   padding: "0.25rem",
   marginTop: "2rem",
-  marginLeft: "-52px",
+  marginLeft: -52,
 
   boxShadow: "-10px -0px 20px rgba(0,0,0,.5)",
 

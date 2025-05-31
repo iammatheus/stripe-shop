@@ -42,6 +42,9 @@ export const ItemsQuantity = styled("div", {
   alignItems: "center",
   justifyContent: "center",
 
+  fontSize: "0.875rem",
+  fontWeight: "bold",
+
   top: -8,
   right: -8,
 
