@@ -12,6 +12,7 @@ interface SuccessProps {
   products: {
     name: string;
     imageUrl: string;
+    quantity: number;
   }[];
 }
 
@@ -31,14 +32,17 @@ export default function Success({
       <SuccessContainer>
         <div>
           {products.map((item) => (
-            <ImageContainer key={item.name}>
-              <Image src={item.imageUrl} width={120} height={110} alt="" />
-            </ImageContainer>
+            <>
+              <ImageContainer key={item.name}>
+                <Image src={item.imageUrl} width={120} height={110} alt="" />
+              </ImageContainer>
+            </>
           ))}
         </div>
 
         <h1>Compra efetuada!</h1>
 
+        {/* TODO: Fazer layout para apresentar as camisetas compradas e a quantidade de cada uma delas. */}
         <p>
           Uhuul <strong>{customerName}</strong>, sua compra de {quantity}
           &nbsp;camisetas já está a caminho da sua casa.
@@ -69,9 +73,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const products = session.line_items?.data.map((item) => {
     const product = item?.price?.product as Stripe.Product;
+
     return {
       name: product.name,
       imageUrl: product.images[0],
+      quantity: item.quantity,
     };
   });
 

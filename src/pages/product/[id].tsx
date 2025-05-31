@@ -31,14 +31,21 @@ export default function Product({ product }: ProductProps) {
   const { addProductBag } = useContext(BagContext);
 
   function handleAddProductBag(
-    { id, name, imageUrl, price, priceInCents, defaultPriceId }: ProductItemBag,
+    {
+      id,
+      name,
+      imageUrl,
+      price,
+      priceInCents,
+      defaultPriceId,
+      quantity,
+    }: ProductItemBag,
     e: React.MouseEvent
   ) {
     addProductBag(
-      { id, name, imageUrl, price, priceInCents, defaultPriceId },
+      { id, name, imageUrl, price, priceInCents, defaultPriceId, quantity },
       e
     );
-    console.log("product", product.defaultPriceId);
   }
 
   if (!product) {
@@ -74,6 +81,7 @@ export default function Product({ product }: ProductProps) {
                   price: product.price,
                   priceInCents: product.priceInCents,
                   defaultPriceId: product.defaultPriceId,
+                  quantity: 1,
                 },
                 e
               )

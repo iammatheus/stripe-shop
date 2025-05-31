@@ -9,6 +9,7 @@ export interface ProductItemBag {
   price: string;
   priceInCents: number;
   defaultPriceId: string;
+  quantity: number;
 }
 
 interface BagContextType {
@@ -22,6 +23,7 @@ interface BagContextType {
     e: React.MouseEvent
   ) => void;
   removeProductBag: (id: string) => void;
+  changeQuantityProduct: (id: string, quantity: number) => void;
 }
 
 interface BagProviderProps {
@@ -43,8 +45,24 @@ export default function BagProvider({ children }: BagProviderProps) {
     setCloseBag(false);
   }
 
+  function changeQuantityProduct(id: string, quantity: number) {
+    setProductsInBag((state) =>
+      state.map((product) =>
+        product.id === id ? { ...product, quantity } : product
+      )
+    );
+  }
+
   function addProductBag(
-    { id, name, imageUrl, price, priceInCents, defaultPriceId }: ProductItemBag,
+    {
+      id,
+      name,
+      imageUrl,
+      price,
+      priceInCents,
+      defaultPriceId,
+      quantity,
+    }: ProductItemBag,
     e: React.MouseEvent
   ) {
     e.preventDefault();
@@ -67,7 +85,7 @@ export default function BagProvider({ children }: BagProviderProps) {
     setProductsInBag((state) => {
       return [
         ...state,
-        { id, name, imageUrl, price, priceInCents, defaultPriceId },
+        { id, name, imageUrl, price, priceInCents, defaultPriceId, quantity },
       ];
     });
   }
@@ -83,7 +101,7 @@ export default function BagProvider({ children }: BagProviderProps) {
     let totalPriceInCents = 0;
 
     productsInBag.forEach((product) => {
-      totalPriceInCents += product.priceInCents;
+      totalPriceInCents += product.priceInCents * product.quantity;
     });
 
     const totalPrice = new Intl.NumberFormat("pt-BR", {
@@ -104,6 +122,7 @@ export default function BagProvider({ children }: BagProviderProps) {
         closeBag,
         addProductBag,
         removeProductBag,
+        changeQuantityProduct,
       }}
     >
       {children}
