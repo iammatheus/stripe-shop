@@ -11,6 +11,11 @@ import Head from "next/head";
 import { ShoppingBag } from "lucide-react";
 import { BagContext, ProductItemBag } from "@/context/BagContext";
 import { useContext } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface HomeProps {
   products: {
@@ -88,25 +93,32 @@ export default function Home({ products }: HomeProps) {
                     <span>{product.price}</span>
                   </div>
 
-                  <AddProductBag
-                    type="button"
-                    onClick={(e) =>
-                      handleAddProductBag(
-                        {
-                          id: product.id,
-                          name: product.name,
-                          imageUrl: product.imageUrl,
-                          price: product.price,
-                          priceInCents: product.priceInCents,
-                          defaultPriceId: product.defaultPriceId,
-                          quantity: 1,
-                        },
-                        e
-                      )
-                    }
-                  >
-                    <ShoppingBag />
-                  </AddProductBag>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AddProductBag
+                        type="button"
+                        onClick={(e) =>
+                          handleAddProductBag(
+                            {
+                              id: product.id,
+                              name: product.name,
+                              imageUrl: product.imageUrl,
+                              price: product.price,
+                              priceInCents: product.priceInCents,
+                              defaultPriceId: product.defaultPriceId,
+                              quantity: 1,
+                            },
+                            e
+                          )
+                        }
+                      >
+                        <ShoppingBag />
+                      </AddProductBag>
+                    </TooltipTrigger>
+                    <TooltipContent className="w-34 h-8 flex items-center justify-center">
+                      Adicionar à sacola
+                    </TooltipContent>
+                  </Tooltip>
                 </footer>
               </Product>
             </Link>
