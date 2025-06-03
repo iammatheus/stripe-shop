@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { ImageContainer, SuccessContainer } from "../styles/pages/success";
+import {
+  ImageContainer,
+  SuccessContainer,
+  TShirtQuantity,
+} from "../styles/pages/success";
 import { GetServerSideProps } from "next";
 import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
@@ -10,17 +14,14 @@ interface SuccessProps {
   customerName: string;
   quantity: number;
   products: {
+    id: string;
     name: string;
     imageUrl: string;
     quantity: number;
   }[];
 }
 
-export default function Success({
-  customerName,
-  products,
-  quantity,
-}: SuccessProps) {
+export default function Success({ customerName, products }: SuccessProps) {
   return (
     <>
       <Head>
@@ -32,20 +33,20 @@ export default function Success({
       <SuccessContainer>
         <div>
           {products.map((item) => (
-            <>
-              <ImageContainer key={item.name}>
+            <div key={item.id}>
+              <ImageContainer>
                 <Image src={item.imageUrl} width={120} height={110} alt="" />
               </ImageContainer>
-            </>
+              <TShirtQuantity>{item.quantity} item(s)</TShirtQuantity>
+            </div>
           ))}
         </div>
 
         <h1>Compra efetuada!</h1>
 
-        {/* TODO: Fazer layout para apresentar as camisetas compradas e a quantidade de cada uma delas. */}
         <p>
-          Uhuul <strong>{customerName}</strong>, sua compra de {quantity}
-          &nbsp;camisetas já está a caminho da sua casa.
+          Uhuul <strong>{customerName}</strong>, suas camisetas já estão a
+          caminho da sua casa! :)
         </p>
 
         <Link href="/">Voltar ao catálogo</Link>
@@ -75,19 +76,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     const product = item?.price?.product as Stripe.Product;
 
     return {
+      id: product.id,
       name: product.name,
       imageUrl: product.images[0],
       quantity: item.quantity,
     };
   });
 
-  const quantity = products?.length;
-
   return {
     props: {
       customerName,
       products,
-      quantity,
     },
   };
 };

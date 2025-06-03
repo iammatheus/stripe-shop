@@ -12,7 +12,7 @@ import {
 
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BagContext } from "@/context/BagContext";
 import axios from "axios";
 import SelectQuantity from "./select-quantity";
@@ -20,6 +20,8 @@ import SelectQuantity from "./select-quantity";
 export default function Bag() {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false);
+
+  const [totalTShirts, setIsTotalTShirts] = useState(0);
 
   const {
     closeBag,
@@ -57,6 +59,15 @@ export default function Bag() {
   function onSelectChange(quantity: number, productId: string) {
     changeQuantityProduct(productId, quantity);
   }
+
+  useEffect(() => {
+    let totalSum = 0;
+
+    productsInBag.forEach((product) => {
+      totalSum += product.quantity;
+    });
+    setIsTotalTShirts(totalSum);
+  }, [productsInBag]);
 
   return (
     <>
@@ -118,13 +129,11 @@ export default function Bag() {
           <OrderTotal>
             <header>
               <span>Item(s) na sacola</span>
-              <span>{productsInBag.length} itens</span>
+              <span>{productsInBag.length}</span>
             </header>
             <header>
               <span>Qtd. total de camisetas</span>
-              <span>
-                {/* TODO: Fazer a lógica para obter o total de camisetas. */}
-              </span>
+              <span>{totalTShirts}</span>
             </header>
             <div>
               <span>Valor total</span>
