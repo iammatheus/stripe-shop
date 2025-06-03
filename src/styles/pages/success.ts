@@ -1,12 +1,13 @@
 import { styled } from "..";
 
 export const SuccessContainer = styled("main", {
+  height: 656,
+  margin: "0 auto",
+
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "top",
-  margin: "0 auto",
-  height: 656,
   gap: "2rem",
 
   h1: {
@@ -39,10 +40,32 @@ export const SuccessContainer = styled("main", {
     display: "flex",
     justifyContent: "space-between",
 
-    "div:first-child ": {
-      marginLeft: 0,
+    "> div": {
+      position: "relative",
+      left: 26,
     },
   },
+});
+
+export const TShirtQuantity = styled("span", {
+  position: "absolute",
+  top: 16,
+  right: 30,
+
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+
+  width: 70,
+  padding: 3,
+
+  backgroundColor: "$green500",
+
+  fontSize: "0.875rem",
+  fontWeight: "bold",
+
+  border: "2px solid $gray900",
+  borderRadius: 8,
 });
 
 export const ImageContainer = styled("div", {
