@@ -30,7 +30,7 @@ O sistema contém um **carrinho de compras**, onde o usuário poderá adicionar 
 - **Axios** - requisições HTTP
 - **Keen Slider** - slide para apresentação das camisetas
 
-#### Como testar o projeto
+### Como testar o projeto
 
 1. No terminal, execute: **git clone https://github.com/iammatheus/stripe-shop.git**
 
