@@ -1,7 +1,6 @@
 import { styled } from "..";
 
 export const CartContainer = styled("section", {
-  zIndex: 1,
   width: "480px",
   height: "100vh",
   padding: "3rem",
@@ -30,6 +29,11 @@ export const CartContainer = styled("section", {
         transform: "translateX(480px)",
       },
     },
+  },
+
+  "@max480": {
+    width: "100%",
+    padding: "3rem 1rem",
   },
 });
 
@@ -115,6 +119,7 @@ export const ProductImage = styled("div", {
 export const OrderTotal = styled("div", {
   display: "flex",
   flexDirection: "column",
+  marginTop: "2rem",
 
   "div,header": {
     display: "flex",

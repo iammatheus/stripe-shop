@@ -12,16 +12,25 @@ import {
 
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BagContext } from "@/context/BagContext";
 import axios from "axios";
+import SelectQuantity from "./select-quantity";
 
 export default function Bag() {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false);
 
-  const { closeBag, isOpenBag, productsInBag, totalPrice, removeProductBag } =
-    useContext(BagContext);
+  const [totalTShirts, setIsTotalTShirts] = useState(0);
+
+  const {
+    closeBag,
+    isOpenBag,
+    productsInBag,
+    totalPrice,
+    removeProductBag,
+    changeQuantityProduct,
+  } = useContext(BagContext);
 
   function handleCloseBag() {
     closeBag();
@@ -32,13 +41,11 @@ export default function Bag() {
   }
 
   async function handleBuyProduct() {
-    const priceIdList = productsInBag.map((product) => product.defaultPriceId);
-
     try {
       setIsCreatingCheckoutSession(true);
 
       const response = await axios.post("/api/checkout", {
-        priceId: priceIdList,
+        products: productsInBag,
       });
 
       const { checkoutUrl } = response.data;
@@ -48,6 +55,19 @@ export default function Bag() {
       alert("Falha ao redirecionar ao checkout!");
     }
   }
+
+  function onSelectChange(quantity: number, productId: string) {
+    changeQuantityProduct(productId, quantity);
+  }
+
+  useEffect(() => {
+    let totalSum = 0;
+
+    productsInBag.forEach((product) => {
+      totalSum += product.quantity;
+    });
+    setIsTotalTShirts(totalSum);
+  }, [productsInBag]);
 
   return (
     <>
@@ -75,7 +95,19 @@ export default function Bag() {
                     <ProductInfo>
                       <div>
                         <p>{product.name}</p>
-                        <strong>{product.price}</strong>
+                        <div className="flex items-center flex-wrap gap-5">
+                          <strong>{product.price}</strong>
+                          <SelectQuantity
+                            onSelectChange={(
+                              event: React.ChangeEvent<HTMLSelectElement>
+                            ) =>
+                              onSelectChange(
+                                Number(event.target.value),
+                                product.id
+                              )
+                            }
+                          />
+                        </div>
                       </div>
                       <BagRemoveButton
                         type="button"
@@ -96,10 +128,13 @@ export default function Bag() {
         {productsInBag.length > 0 && (
           <OrderTotal>
             <header>
-              <span>Quantidade</span>
-              <span>{productsInBag.length} itens</span>
+              <span>Item(s) na sacola</span>
+              <span>{productsInBag.length}</span>
             </header>
-
+            <header>
+              <span>Qtd. total de camisetas</span>
+              <span>{totalTShirts}</span>
+            </header>
             <div>
               <span>Valor total</span>
               <strong>{totalPrice}</strong>

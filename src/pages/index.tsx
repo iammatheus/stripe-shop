@@ -20,25 +20,48 @@ interface HomeProps {
     price: string;
     priceInCents: number;
     defaultPriceId: string;
+    quantity: number;
   }[];
 }
 
 export default function Home({ products }: HomeProps) {
   const [sliderRef] = useKeenSlider({
     slides: {
-      perView: 3,
+      perView: 2.5,
       spacing: 48,
+    },
+    breakpoints: {
+      "(max-width: 1024px)": {
+        slides: {
+          perView: 1.3,
+          spacing: 36,
+        },
+      },
+      "(max-width: 480px)": {
+        slides: {
+          perView: 1.1,
+          spacing: 20,
+        },
+      },
     },
   });
 
   const { addProductBag } = useContext(BagContext);
 
   function handleAddProductBag(
-    { id, name, imageUrl, price, priceInCents, defaultPriceId }: ProductItemBag,
+    {
+      id,
+      name,
+      imageUrl,
+      price,
+      priceInCents,
+      defaultPriceId,
+      quantity,
+    }: ProductItemBag,
     e: React.MouseEvent
   ) {
     addProductBag(
-      { id, name, imageUrl, price, priceInCents, defaultPriceId },
+      { id, name, imageUrl, price, priceInCents, defaultPriceId, quantity },
       e
     );
   }
@@ -76,6 +99,7 @@ export default function Home({ products }: HomeProps) {
                           price: product.price,
                           priceInCents: product.priceInCents,
                           defaultPriceId: product.defaultPriceId,
+                          quantity: 1,
                         },
                         e
                       )

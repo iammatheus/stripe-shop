@@ -1,4 +1,6 @@
+import { Bell } from "lucide-react";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export interface ProductItemBag {
   id: string;
@@ -7,6 +9,7 @@ export interface ProductItemBag {
   price: string;
   priceInCents: number;
   defaultPriceId: string;
+  quantity: number;
 }
 
 interface BagContextType {
@@ -20,6 +23,7 @@ interface BagContextType {
     e: React.MouseEvent
   ) => void;
   removeProductBag: (id: string) => void;
+  changeQuantityProduct: (id: string, quantity: number) => void;
 }
 
 interface BagProviderProps {
@@ -41,21 +45,47 @@ export default function BagProvider({ children }: BagProviderProps) {
     setCloseBag(false);
   }
 
+  function changeQuantityProduct(id: string, quantity: number) {
+    setProductsInBag((state) =>
+      state.map((product) =>
+        product.id === id ? { ...product, quantity } : product
+      )
+    );
+  }
+
   function addProductBag(
-    { id, name, imageUrl, price, priceInCents, defaultPriceId }: ProductItemBag,
+    {
+      id,
+      name,
+      imageUrl,
+      price,
+      priceInCents,
+      defaultPriceId,
+      quantity,
+    }: ProductItemBag,
     e: React.MouseEvent
   ) {
     e.preventDefault();
     e.stopPropagation();
 
+    const exists = productsInBag.some((product) => product.id === id);
+
+    if (exists) {
+      toast(`${name} já está na sacola.`, {
+        action: {
+          label: "OK",
+          onClick: () => {},
+        },
+        icon: <Bell />,
+        duration: 3000,
+      });
+      return;
+    }
+
     setProductsInBag((state) => {
-      const exists = state.some((product) => product.id === id);
-      if (exists) {
-        return state;
-      }
       return [
         ...state,
-        { id, name, imageUrl, price, priceInCents, defaultPriceId },
+        { id, name, imageUrl, price, priceInCents, defaultPriceId, quantity },
       ];
     });
   }
@@ -71,7 +101,7 @@ export default function BagProvider({ children }: BagProviderProps) {
     let totalPriceInCents = 0;
 
     productsInBag.forEach((product) => {
-      totalPriceInCents += product.priceInCents;
+      totalPriceInCents += product.priceInCents * product.quantity;
     });
 
     const totalPrice = new Intl.NumberFormat("pt-BR", {
@@ -92,6 +122,7 @@ export default function BagProvider({ children }: BagProviderProps) {
         closeBag,
         addProductBag,
         removeProductBag,
+        changeQuantityProduct,
       }}
     >
       {children}

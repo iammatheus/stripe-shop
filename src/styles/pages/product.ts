@@ -8,15 +8,23 @@ export const ProductContainer = styled("main", {
 
   maxWidth: 1180,
   margin: "0 auto",
+
+  "@max768": {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export const ImageContainer = styled("div", {
   width: "100%",
   maxWidth: 576,
   height: 656,
+  padding: "0.25rem",
+
   background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
   borderRadius: 8,
-  padding: "0.25rem",
 
   display: "flex",
   alignItems: "center",
@@ -24,6 +32,16 @@ export const ImageContainer = styled("div", {
 
   img: {
     objectFit: "cover",
+  },
+
+  "@max960": {
+    width: "100%",
+    height: "100%",
+
+    img: {
+      width: "100%",
+      height: "100%",
+    },
   },
 });
 
@@ -72,15 +90,18 @@ export const ProductDetails = styled("div", {
   },
 
   button: {
-    marginTop: "auto",
-    backgroundColor: "$green500",
-    border: 0,
-    color: "$white",
-    borderRadius: 8,
-    padding: "1.25rem",
-    cursor: "pointer",
     fontWeight: "bold",
     fontSize: "$md",
+
+    color: "$white",
+    backgroundColor: "$green500",
+
+    marginTop: "auto",
+    padding: "1.25rem",
+
+    border: 0,
+    borderRadius: 8,
+    cursor: "pointer",
 
     "&:disabled": {
       opacity: 0.6,
@@ -89,6 +110,10 @@ export const ProductDetails = styled("div", {
 
     "&:not(:disabled):hover": {
       backgroundColor: "$green300",
+    },
+
+    "@max960": {
+      marginTop: "2rem",
     },
   },
 });

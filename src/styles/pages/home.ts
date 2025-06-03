@@ -24,12 +24,20 @@ export const Product = styled("div", {
     objectFit: "cover",
   },
 
+  "&:hover": {
+    footer: {
+      transform: "translateY(0%)",
+      opacity: 1,
+    },
+  },
+
   footer: {
     position: "absolute",
     bottom: "0.25rem",
     left: "0.25rem",
     right: "0.25rem",
     padding: "1.25rem",
+    gap: "1rem",
 
     borderRadius: 6,
 
@@ -58,10 +66,16 @@ export const Product = styled("div", {
       fontWeight: "bold",
       color: "$green300",
     },
-  },
 
-  "&:hover": {
-    footer: {
+    "@max680": {
+      flexDirection: "column-reverse",
+      alignItems: "flex-start",
+      div: {
+        flexDirection: "column-reverse",
+      },
+    },
+
+    "@max768": {
       transform: "translateY(0%)",
       opacity: 1,
     },
@@ -70,21 +84,21 @@ export const Product = styled("div", {
 
 export const AddProductBag = styled("button", {
   backgroundColor: "$green500",
-  border: 0,
   color: "$white",
-  borderRadius: 8,
-  padding: ".75rem",
+
   cursor: "pointer",
-  fontWeight: "bold",
-  fontSize: "$md",
+  width: "3rem",
+  height: "3rem",
+
+  border: 0,
+  borderRadius: 8,
   lineHeight: 0,
 
-  "&:disabled": {
-    opacity: 0.6,
-    cursor: "not-allowed",
-  },
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 
-  "&:not(:disabled):hover": {
+  "&:hover": {
     transition: "background-color .2s",
     backgroundColor: "$green300",
   },
